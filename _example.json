@@ -1,0 +1,26 @@
+{
+  "request": {
+    "bc": 0.42,
+    "bc_reference": "icao",
+    "weight_gr": 300,
+    "muzzle_velocity_fps": 2650,
+    "sight_height_in": 2.0,
+    "zero_range_yd": 100,
+    "max_range_yd": 1500,
+    "step_yd": 100,
+    "wind_mph": 10,
+    "wind_clock": 3,
+    "temperature_f": 59,
+    "pressure_inhg": 29.92,
+    "humidity_pct": 0,
+    "latitude_deg": 40.0,
+    "azimuth_deg": 0,
+    "look_angle_deg": 0,
+    "dt_ms": 1.0
+  },
+  "tolerance": { "path_in": 0.25, "drift_in": 0.25, "velocity_fps": 2.0, "time_s": 0.001 },
+  "points": [
+    { "range_yd": 500,  "path_in": -0.0, "drift_in": 0.0, "velocity_fps": 0.0, "time_s": 0.0 },
+    { "range_yd": 1000, "path_in": -0.0, "drift_in": 0.0, "velocity_fps": 0.0, "time_s": 0.0 }
+  ]
+}
