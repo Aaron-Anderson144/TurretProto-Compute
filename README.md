@@ -79,45 +79,4 @@ run_turret_2axis     % coupled pan and tilt
 print are from a noise free plant. The gyro and encoder noise the plant defines
 never get exercised. Fix that before quoting any of those numbers.
 
-## Hardware path
 
-From `docs/Turretnoteshardware.txt`: Jetson Orin Nano Super dev kit and sim
-first, then a real IMU + 2 axis brushless gimbal + recoil actuator, then rugged
-enclosures and better IMUs, then DuraCOR for environmental.
-
-Two things worth deciding early:
-
-- The 1 kHz rate loops do not belong in Linux userspace on the Orin. Put them on
-  an MCU (STM32H7, which is the no_std target the ballistics crate already
-  targets) and leave the Jetson doing tracker, ballistics and mission at 50 to
-  100 Hz.
-- The whole thing is a time of flight prediction problem, so IMU, camera and
-  control need a common timebase. Pick one hardware sync line or PTP now.
-
-## Building on it
-
-`CLAUDE.md` has the conventions that will bite you: the two frames and why they
-are separate types, the sign conventions, the units, and what is deliberately
-not modelled. Read it before changing anything in `ballistics/`.
-
-CI (`.github/workflows/ci.yml`) runs the Rust tests, clippy as an error, both
-no_std builds, and the Python test suite. All green as of the last commit.
-
-## License
-
-MIT or Apache-2.0, at your option. See `LICENSE-MIT` and `LICENSE-APACHE`.
-
-## Next
-
-Order is in `docs/REVIEW-2026-09-07.md`. Short version:
-
-1. Reference fixtures out of the Python so `reference.rs` actually runs. This is
-   now the only thing between the solver and a real accuracy claim.
-2. Turn the MATLAB noise on, fix the encoder differentiation and the dB metric,
-   re-take the numbers.
-3. Spin drift and Miller SG in the Rust, parity with the Python, then retire the
-   FastAPI backend.
-4. `fcs/`: define `AimPoint`, wire the tracker to `aim()` and `aim()` to the
-   controller's rate feed forward.
-
-Done: `aim.rs`, the inverse solver.
