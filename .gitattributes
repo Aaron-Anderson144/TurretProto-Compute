@@ -1,0 +1,23 @@
+# Normalize to LF in the repo. Without this, editing a .rs on Windows in
+# something that saves CRLF makes git report the whole file as changed and
+# every diff turns to noise.
+* text=auto eol=lf
+
+# Windows-only files that want CRLF in the working tree.
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+*.ps1  text eol=crlf
+
+# Leave these alone.
+*.png  binary
+*.jpg  binary
+*.pdf  binary
+*.dwg  binary
+*.dxf  binary
+*.wasm binary
+*.xlsx binary
+*.pptx binary
+
+# Generated. Collapses them in PR diffs and keeps them out of language stats.
+*.lock            -diff linguist-generated
+package-lock.json -diff linguist-generated

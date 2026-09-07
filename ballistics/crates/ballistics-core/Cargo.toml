@@ -1,0 +1,23 @@
+[package]
+name = "ballistics-core"
+description = "no_std exterior ballistics: 3-DOF point mass, RK4, G7 drag, atmosphere, wind, Coriolis"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[features]
+default = ["table"]
+# Pulls in std (Vec, fs). Off = pure core + libm, fine for an MCU.
+std = ["serde?/std"]
+serde = ["dep:serde"]
+# Shooter-units request/response API used by the CLI and the wasm wrapper.
+table = ["std", "serde"]
+
+[dependencies]
+libm = "0.2"
+serde = { version = "1", optional = true, default-features = false, features = ["derive"] }
+
+[dev-dependencies]
+approx = "0.5"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

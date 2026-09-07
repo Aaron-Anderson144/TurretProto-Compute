@@ -1,2 +1,28 @@
+# rust
 target/
 **/pkg/
+
+# node
+node_modules/
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# matlab / octave
+*.asv
+*.mex*
+octave-workspace
+
+# os / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# staged for deletion, not part of the project
+_to_delete/

@@ -1,0 +1,64 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  rust:
+    name: ballistics
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ballistics
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ballistics
+
+      - name: test
+        run: cargo test --workspace
+
+      - name: clippy
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      # The whole point of the core crate. If this breaks, the MCU target is gone.
+      - name: no_std builds
+        run: |
+          cargo build -p ballistics-core --no-default-features
+          cargo build -p ballistics-core --no-default-features --features serde
+
+  python:
+    name: ballistics-python
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ballistics-python/backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: ballistics-python/backend/requirements.txt
+
+      - name: install
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+
+      # This is the reference oracle for the Rust port, so it has to stay honest.
+      - name: test
+        run: python -m pytest ballistics/tests/ -q

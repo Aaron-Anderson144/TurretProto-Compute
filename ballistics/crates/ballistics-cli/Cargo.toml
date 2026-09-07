@@ -1,0 +1,15 @@
+[package]
+name = "ballistics-cli"
+description = "Command-line drop/drift table on top of ballistics-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "bal"
+path = "src/main.rs"
+
+[dependencies]
+ballistics-core = { path = "../ballistics-core", features = ["table"] }
+clap = { version = "~4.4", default-features = false, features = ["std", "derive", "help", "usage", "error-context"] }
+serde_json = "1"
